@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <None Include="example1.pkr" />
+    <Content Include="spec.txt" />
+    <Compile Include="Types.fs" />
+    <Compile Include="StringConversions.fs" />
+    <Compile Include="Tokens.fs" />
+    <Compile Include="Lexer.fs" />
+    <Compile Include="HandParser.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+
+
+  <ItemGroup />
+
+</Project>

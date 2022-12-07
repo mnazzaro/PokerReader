@@ -1,0 +1,32 @@
+new holdem nl 25 50
+$Andrew$ 2000
+$Mark$ 2000
+$Grant$ 2000
+$Mats$ 2000
+$Andre$ 2000
+
+hand 
+$Andrew$ As Ac
+$Mark$ Jh Th
+$Grant$ 2d 3s
+$Mats$ 5d 6d
+$Andre$ Qh Qd
+
+bet $Mark$ f
+bet $Grant$ f
+bet $Mats$ 25
+bet $Andre$ 50
+bet $Andrew$ 50
+deal 9h 7h Ks
+bet $Andre$ 0
+bet $Andrew$ 100
+bet $Mats$ 100
+bet $Andre$ 100
+deal 7s
+bet $Andre$ 0
+bet $Andrew$ 0
+bet $Mats$ 0
+deal Js
+bet $Andre$ 250
+bet $Andrew$ f
+bet $Mats$ 250

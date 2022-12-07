@@ -1,0 +1,82 @@
+[format] # could be omaha, 5cs, holdem, etc. (TODO: INCLUDE REMAINING FORMATS)
+[limit type] # pl for pot limit, nl for no limit
+[blinds] # two comma separated values with no white space (e.g. 50,100)
+[player_name] seat_number starting_stack
+... # Space separated list of all starting players formatted as above. 0 is dealer, 1 is SB, etc.
+
+# Throughout a game there are numerous events that can happen. Here's what we expect and will attemp to handle:
+#     * player bets (can be any street)
+#     * hand is dealt
+#     * board is updated
+#     * player join at a given position with a starting stack
+#     * player leaves
+#     * game type changes (important for dealer's choice style events)
+
+# We want to minimize duplicate information for the sake of file size, simplicity, and statelessness.
+# As long as we have all the above information we should be able to fully reconstruct a hand by induction.
+# It will be the responsibility of the file reader to keep track of this state, though.
+
+# The remaining portion of the file will be a canonical, line-separated series of structures representing each event.
+# Now, let's go through each event and introduce the structure that represents it. First up is a bet:
+
+# Format: bet [player_name] [bet_amount OR f] # an f denotes a fold
+# Examples:
+
+bet "Mark" 100
+bet "Grant" f
+
+
+
+# Next up dealing a new hand
+
+# Format: hand [list player_name]
+# Example:
+
+
+
+# Board update:
+
+# Format: deal [space separated list of card names]
+# Examples:
+
+deal As 5h Tc # This could be a holdem flop
+deal Kd # This could be the turn
+
+
+
+# Player join:
+
+# Format: join [player_name] [whom they are to the right of] [starting_stack]
+# Examples:
+
+join "Daniel" 0 2000 # A player named Daniel joins to the right of the original dealer (or whomever is now sitting to the right of the dealer)
+join "Doyle" 3 1630 # A player named Doyle joins to the right of the original UTG
+
+
+
+# Player leave:
+
+# Format: leave [player_name]
+# Example:
+
+leave "Daniel" # A reader can determine the new seating order without specifying the seat of the departing player
+
+
+
+# Game type change
+
+# Format: new [format] [limit type] [blinds]
+# Examples:
+
+new omaha pl 25,50 # Here, we have changed the mode to pot limit omaha with 25 chip sb, 50 chip bb
+
+
+# Assumptions:
+#     * Betting and the blinds rotate clockwise
+#     * When a player join, they will be participating in the next hand. If they are just sitting at the table,
+#       we don't want to invoke the join event until they are playing the following hand.
+
+
+
+
+
