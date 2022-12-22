@@ -12,15 +12,18 @@ $Grant$ 2d 3s
 $Mats$ 5d 6d
 $Andre$ Qh Qd
 
-bet $Mark$ f
-bet $Grant$ f
-bet $Mats$ 25
+bet $Mark$ 25
+bet $Grant$ 50
+bet $Mats$ 50
 bet $Andre$ 50
 bet $Andrew$ 50
+bet $Mark$ f
 deal 9h 7h Ks
+bet $Grant$ 0
 bet $Mats$ 0
 bet $Andre$ 0
 bet $Andrew$ 100
+bet $Grant$ f
 bet $Mats$ 100
 bet $Andre$ 100
 deal 7s

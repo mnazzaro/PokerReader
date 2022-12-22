@@ -4,7 +4,7 @@
 [player_name] seat_number starting_stack
 ... # Space separated list of all starting players formatted as above. 0 is dealer, 1 is SB, etc.
 
-# Throughout a game there are numerous events that can happen. Here's what we expect and will attemp to handle:
+# Throughout a game there are numerous events that can happen. Here's what we expect and will attempt to handle:
 #     * player bets (can be any street)
 #     * hand is dealt
 #     * board is updated
