@@ -28,5 +28,7 @@ let StringToSuit (strSuit: char) =
     | _ -> failwith "Undefined card suit string"
 
 let StringToCard (strCard: string) = 
-    if strCard.Length = 2 then Card ((StringToRank strCard.[0]), (StringToSuit strCard.[1]))
-    else failwith "Undefined card string"
+    match strCard with
+    | "q" -> Unknown
+    | a when a.Length = 2 -> Known ((StringToRank strCard.[0]), (StringToSuit strCard.[1]))
+    | _ -> failwithf "Undefined card string: %s" strCard

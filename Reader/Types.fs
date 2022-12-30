@@ -5,7 +5,7 @@ type FormatType =
     | Holdem
 
 type LimitType = 
-    | Limit
+    | PotLimit
     | NoLimit
 
 type Rank = 
@@ -37,7 +37,8 @@ type Bet =
     | Raise of decimal
 
 type Card = 
-    Rank * Suit
+    | Known of Rank * Suit
+    | Unknown
 
 type GameType = FormatType * LimitType
 
@@ -45,16 +46,17 @@ type Deal = Card list
 
 type Hole = Card list
 
-type Blinds =
-    | SmallBig of decimal * decimal
-    | Anti
+type Blinds = decimal * decimal
+
+type Ante = decimal
 
 type GameState  = 
     { GameType: GameType 
+      Ante: Ante
       Blinds: Blinds
       Players: string list 
       Stacks: Map<string, decimal> }
-    static member Empty = { GameType=(Holdem, NoLimit); Blinds=SmallBig(0.5m, 1m); Players=[]; Stacks=Map.empty; }
+    static member Empty = { GameType=(Holdem, NoLimit); Ante = 0m; Blinds=Blinds(0.5m, 1m); Players=[]; Stacks=Map.empty; }
     member this.MoveButtton() = { this with Players = match this.Players with | h::t -> t @ [h] | _ -> failwith "There are less than two people in the game" }
     member this.Bet(player: string, amount: decimal) = 
         { this with Stacks = Map.change player (fun x -> match x with | Some(f) -> Some(f + amount) | None -> failwithf "Player %s is not seated at the table" player) this.Stacks }
@@ -66,7 +68,7 @@ type GameState  =
             | h::t -> addPlayerInOrder t (h::pn)
             | _ -> failwithf "Player %s is not seated at the table" playerToLeft
         in 
-        { GameType = this.GameType; Blinds = this.Blinds; Players = addPlayerInOrder this.Players []; Stacks = Map.add player stack this.Stacks; }
+        { GameType = this.GameType; Ante = this.Ante; Blinds = this.Blinds; Players = addPlayerInOrder this.Players []; Stacks = Map.add player stack this.Stacks; }
     member this.Leave(player: string) =
         let rec removePlayer (po: string list) (pn: string list) = 
             match po with 
@@ -75,10 +77,11 @@ type GameState  =
             | h::t -> removePlayer t (h::pn)
             | _ -> failwithf "Unexpected leave: %s" player
         in
-        { GameType = this.GameType; Blinds = this.Blinds; Players = removePlayer this.Players []; Stacks = Map.remove player this.Stacks; }
+        { GameType = this.GameType; Ante = this.Ante; Blinds = this.Blinds; Players = removePlayer this.Players []; Stacks = Map.remove player this.Stacks; }
     override this.ToString() =
         let (format, limit) = this.GameType
-        let header = sprintf "\nFormat: %A\nLimit: %A\nPlayers Clockwise From Dealer: " format limit
+        let (small, big) = this.Blinds
+        let header = sprintf "\nFormat: %A\nLimit: %A\nAnte: %M\nBlinds: %M, %M\nPlayers Clockwise From Dealer: " format limit this.Ante small big
         let rec printPlayers out players =
             match players with
             | [] -> out
@@ -100,7 +103,6 @@ type BettingRound =
             | None -> failwith "Malformed BettingRound"
         let updateMap m k = m |> Map.change k updateMapFunc
         let rec displayBets (out: string) (l: string list) (m: Map<string, Bet list>) = 
-            //printfn "%A\tAndre: %A, Mats: %A" l m.["Andre"] m.["Mats"]
             match l with
             | [] -> out
             | h::t -> if m |> Map.containsKey h then 

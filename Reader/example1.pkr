@@ -1,4 +1,4 @@
-new holdem nl 25 50
+new holdem nl 0 25 50
 $Andrew$ 2000
 $Mark$ 2000
 $Grant$ 2000
@@ -8,14 +8,14 @@ $Andre$ 2000
 hand 
 $Andrew$ As Ac
 $Mark$ Jh Th
-$Grant$ 2d 3s
-$Mats$ 5d 6d
+$Grant$ q q
+$Mats$ q q
 $Andre$ Qh Qd
 
 bet $Mark$ 25
 bet $Grant$ 50
 bet $Mats$ 50
-bet $Andre$ 50
+bet $Andre$ 50	
 bet $Andrew$ 50
 bet $Mark$ f
 deal 9h 7h Ks
